@@ -92,6 +92,23 @@
 
                         this.context.drawImage(this.video, 0, 0, this.canvas.width, this.canvas.height);
 
+                        this.context.drawImage(video, 0, 0, video.videoWidth, video.videoHeight, 0, 0, canvas.width, canvas.height);
+
+                        var box = {
+                            x: 50,
+                            h: 100
+                        };
+                        box.y = (canvas.height - box.h) / 2;
+                        box.w = (canvas.width - box.x * 2);
+
+                        this.context.beginPath();
+                        this.context.strokeStyle = 'red';
+                        this.context.lineWidth = 2;
+                        this.context.rect(
+                            box.x, box.y, box.w, box.h
+                        );
+                        this.context.stroke();
+
                     }
 
                     requestAnimationFrame(this.render);
