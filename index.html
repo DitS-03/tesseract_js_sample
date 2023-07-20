@@ -65,6 +65,8 @@
 
                         this.canvas = this.$refs.canvas;
                         this.context = this.canvas.getContext('2d');
+                        this.buf = document.createElement('canvas');
+                        document.body.append(this.buf);
 
                         this.video = document.createElement('video');
                         this.video.addEventListener('loadedmetadata', () => { // メタデータが取得できるようになったら実行
@@ -92,14 +94,12 @@
 
                         this.context.drawImage(this.video, 0, 0, this.canvas.width, this.canvas.height);
 
-                        this.context.drawImage(video, 0, 0, video.videoWidth, video.videoHeight, 0, 0, canvas.width, canvas.height);
-
                         var box = {
                             x: 50,
                             h: 100
                         };
-                        box.y = (canvas.height - box.h) / 2;
-                        box.w = (canvas.width - box.x * 2);
+                        box.y = (this.canvas.height - box.h) / 2;
+                        box.w = (this.canvas.width - box.x * 2);
 
                         this.context.beginPath();
                         this.context.strokeStyle = 'red';
@@ -108,6 +108,10 @@
                             box.x, box.y, box.w, box.h
                         );
                         this.context.stroke();
+
+                        this.buf.width = box.w;
+                        this.buf.height = box.h;
+                        this.buf.getContext('2d').drawImage(this.canvas, box.x, box.y, box.w, box.h, 0, 0, box.w, box.h);
 
                     }
 
@@ -154,7 +158,7 @@
 
                     // this.makeSound(); // 音を鳴らす
                     this.pauseVideo();
-                    this.dataUrl = this.canvas.toDataURL();
+                    this.dataUrl = this.buf.toDataURL();
 
                 },
                 makeSound() { // ④ おまけ：スナップショットをとるときに音をならす
